@@ -1,0 +1,19 @@
+.counter {
+
+    font-size: 50px;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+.active {
+    color: #53ff00;
+}
+
+.disabled {
+    color: #ff0000;
+}
+
+.maxValue {
+    font-size: 30px;
+    font-weight: bold;
+}
