@@ -65,7 +65,7 @@ export const IncrementsSettings = ({
                    className={classForStartInput} onChange={handleChangeStartInc}
             />
             <div className={commonStyles.btnContainer}>
-                <Button disabled={!(increments.startInc < increments.endInc)}
+                <Button disabled={increments.startInc >= increments.endInc}
                         style={styleForBtn}
                         onClick={changeMaxValueType}>{isOn ? 'Off' : 'On'}</Button>
             </div>

@@ -1,10 +1,10 @@
-import React from "react";
-import { Container } from "../container/Container";
-import { CountParagraph } from "../countParagraph/CountParagraph";
-import styles from "../countParagraph/counterParagraph.module.css";
-import { Button } from "../button/Button";
-import { IncrementsObj } from "../../App";
-import cont from "../container/container.module.css";
+import React from 'react';
+import { Container } from '../container/Container';
+import { CountParagraph } from '../countParagraph/CountParagraph';
+import styles from '../countParagraph/counterParagraph.module.css';
+import { Button } from '../button/Button';
+import { IncrementsObj } from '../../App';
+import cont from '../container/container.module.css';
 
 type CounterPropsType = {
   isOn: boolean;
@@ -47,7 +47,7 @@ export const Counter = ({
     ? classLogicForCounterParagraphRight
     : classLogicForCounterParagraphLeft;
   const classForCounterParagraph =
-    styles.counter + " " + classLogicForCounterParagraphLast;
+    styles.counter + ' ' + classLogicForCounterParagraphLast;
 
   // end
 
