@@ -24,10 +24,7 @@ export const Counter = ({isOn, randomNumber, counter, increments, setRandomNum, 
     }
 
     function handleResetCounter() {
-        let random = Math.ceil(Math.random() * 10)
-        if (random === 11) {
-            random--
-        }
+        let random = Math.ceil(Math.random() * 9)
         setRandomNum(random)
         setCounter(isOn ? 0 : increments.startInc)
     }

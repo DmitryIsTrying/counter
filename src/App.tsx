@@ -1,10 +1,5 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import './App.css';
-import {Button} from "./components/button/Button";
-import {Container} from "./components/container/Container";
-import {CountParagraph} from "./components/countParagraph/CountParagraph";
-import styles from "./components/countParagraph/counterParagraph.module.css";
-
 import {IncrementsSettings} from "./components/incrementsSettings/IncrementsSettings";
 import {Counter} from "./components/counter/Counter";
 
@@ -22,12 +17,12 @@ function App() {
 
     const [counter, setCounter] = useState<number>(0);
 
-    const [randomNum, setRandomNum] = useState<number>(Math.ceil(Math.random() * 10));
+    const [randomNum, setRandomNum] = useState<number>(Math.ceil(Math.random() * 9));
 
     const [isOn, setIsOn] = useState<boolean>(true);
 
     useEffect(() => {
-        setIncrements({startInc: Number(localStorage.getItem('startInc')), endInc: Number(localStorage.getItem('endInc'))});
+        setIncrements({startInc: Number(localStorage.getItem('startInc') || 0), endInc: Number(localStorage.getItem('endInc') || 0)});
     }, [])
 
     useEffect(() => {
