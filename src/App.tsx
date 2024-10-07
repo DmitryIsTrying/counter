@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
-import { IncrementsSettings } from "./components/incrementsSettings/IncrementsSettings";
-import { Counter } from "./components/counter/Counter";
+import React, { useEffect, useState } from 'react';
+import './App.css';
+import { IncrementsSettings } from './components/incrementsSettings/IncrementsSettings';
+import { Counter } from './components/counter/Counter';
 
 export type IncrementsObj = {
   startInc: number;
@@ -24,14 +24,14 @@ function App() {
 
   useEffect(() => {
     setIncrements({
-      startInc: Number(localStorage.getItem("startInc") || 0),
-      endInc: Number(localStorage.getItem("endInc") || 0),
+      startInc: Number(localStorage.getItem('startInc') || 0),
+      endInc: Number(localStorage.getItem('endInc') || 0),
     });
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("startInc", JSON.stringify(increments.startInc));
-    localStorage.setItem("endInc", JSON.stringify(increments.endInc));
+    localStorage.setItem('startInc', JSON.stringify(increments.startInc));
+    localStorage.setItem('endInc', JSON.stringify(increments.endInc));
   }, [increments]);
 
   return (
