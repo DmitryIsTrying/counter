@@ -1,47 +1,47 @@
-import React, { ChangeEvent } from 'react';
-import { Container } from '../container/Container';
-import { Input } from '../input/Input';
+import { ChangeEvent } from 'react';
+import { useDispatch } from 'react-redux';
+import {
+  IncrementsObj,
+  setEndIncAC,
+  setStartIncAC,
+} from '../../bll/reducers/increments-reducer';
 import { Button } from '../button/Button';
+import { Container } from '../container/Container';
 import commonStyles from '../container/container.module.css';
-import { IncrementsObj } from '../../App';
+import { Input } from '../input/Input';
+import { useSelector } from 'react-redux';
+import { AppRootState } from '../../bll/store/store';
+import { setCounterValueAC } from '../../bll/reducers/counter-reducer';
+import { switchAC } from '../../bll/reducers/toggle-reducer';
 
-type IncrementsSettingsPropsType = {
-  isOn: boolean;
-  increments: IncrementsObj;
-  setIncrements: (incrementsObj: IncrementsObj) => void;
-  setCounter: (counter: number) => void;
-  setIsOn: (isOn: boolean) => void;
-};
+export const IncrementsSettings = () => {
+  const dispatch = useDispatch();
+  const { startInc, endInc } = useSelector<AppRootState, IncrementsObj>(
+    (store) => store.increments
+  );
+  const toggle = useSelector<AppRootState, boolean>((state) => state.toggle);
 
-export const IncrementsSettings = ({
-  isOn,
-  increments,
-  setIncrements,
-  setCounter,
-  setIsOn,
-}: IncrementsSettingsPropsType) => {
   // Handlers functions
-
   function handleChangeStartInc(e: ChangeEvent<HTMLInputElement>) {
-    setIncrements({ ...increments, startInc: Number(e.currentTarget.value) });
+    dispatch(setStartIncAC(+e.currentTarget.value));
   }
 
   function handleChangeEndInc(e: ChangeEvent<HTMLInputElement>) {
-    setIncrements({ ...increments, endInc: Number(e.currentTarget.value) });
+    dispatch(setEndIncAC(+e.currentTarget.value));
   }
 
   function changeMaxValueType() {
-    setCounter(increments.startInc);
-    if (!isOn) {
-      setCounter(0);
+    dispatch(setCounterValueAC(startInc));
+    if (!toggle) {
+      dispatch(setCounterValueAC(0));
     }
-    setIsOn(!isOn);
+    dispatch(switchAC());
   }
 
   // end
 
   // styles logic
-  const logicClassForParagraph = isOn
+  const logicClassForParagraph = toggle
     ? commonStyles.trueChangeText
     : commonStyles.falseChangeText;
   const classForParagraph =
@@ -51,37 +51,37 @@ export const IncrementsSettings = ({
 
   const classForStartInput = commonStyles.inputStart + ' ' + commonStyles.start;
 
-  const styleForBtn = { backgroundColor: isOn ? '#ec4141' : '#52ec41' };
+  const styleForBtn = { backgroundColor: toggle ? '#ec4141' : '#52ec41' };
   // end
 
   return (
     <Container>
       <p className={classForParagraph}>
-        {isOn ? 'You can change' : "You can't change"}
+        {toggle ? 'You can change' : "You can't change"}
       </p>
       <Input
-        disabled={!isOn}
+        disabled={!toggle}
         min={1}
         max={99}
-        value={increments.endInc}
+        value={endInc}
         className={classForEndInput}
         onChange={handleChangeEndInc}
       />
       <Input
-        disabled={!isOn}
+        disabled={!toggle}
         min={0}
         max={98}
-        value={increments.startInc}
+        value={startInc}
         className={classForStartInput}
         onChange={handleChangeStartInc}
       />
       <div className={commonStyles.btnContainer}>
         <Button
-          disabled={increments.startInc >= increments.endInc}
+          disabled={startInc >= endInc}
           style={styleForBtn}
           onClick={changeMaxValueType}
         >
-          {isOn ? 'Off' : 'On'}
+          {toggle ? 'Off' : 'On'}
         </Button>
       </div>
     </Container>

@@ -1,38 +1,38 @@
-import React from 'react';
+import { memo, useMemo, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setCounterValueAC,
+  upCounterValueAC,
+} from '../../bll/reducers/counter-reducer';
+import { IncrementsObj } from '../../bll/reducers/increments-reducer';
+import { AppRootState } from '../../bll/store/store';
+import { getRandomNumber } from '../../utils/getRandomNumber';
+import { Button } from '../button/Button';
 import { Container } from '../container/Container';
+import cont from '../container/container.module.css';
 import { CountParagraph } from '../countParagraph/CountParagraph';
 import styles from '../countParagraph/counterParagraph.module.css';
-import { Button } from '../button/Button';
-import { IncrementsObj } from '../../App';
-import cont from '../container/container.module.css';
 
-type CounterPropsType = {
-  isOn: boolean;
-  randomNumber: number;
-  counter: number;
-  increments: IncrementsObj;
-  setRandomNum: (randomNumber: number) => void;
-  setCounter: (counter: number) => void;
-};
+export const Counter = () => {
+  const dispatch = useDispatch();
+  const { startInc, endInc } = useSelector<AppRootState, IncrementsObj>(
+    (state) => state.increments
+  );
+  const counter = useSelector<AppRootState, number>((state) => state.counter);
+  const toggle = useSelector<AppRootState, boolean>((state) => state.toggle);
 
-export const Counter = ({
-  isOn,
-  randomNumber,
-  counter,
-  increments,
-  setRandomNum,
-  setCounter,
-}: CounterPropsType) => {
+  const currentNum = useRef(getRandomNumber());
+  const randomNumber = currentNum.current;
+
   // Handlers functions
 
   function handleUpCounter() {
-    setCounter(counter + 1);
+    dispatch(upCounterValueAC());
   }
 
   function handleResetCounter() {
-    let random = Math.floor(Math.random() * 10) + 1;
-    setRandomNum(random);
-    setCounter(isOn ? 0 : increments.startInc);
+    dispatch(setCounterValueAC(toggle ? 0 : startInc));
+    currentNum.current = getRandomNumber();
   }
 
   // end
@@ -40,10 +40,10 @@ export const Counter = ({
   //  styles logic
 
   const classLogicForCounterParagraphRight =
-    counter >= increments.endInc ? styles.disabled : styles.active;
+    counter >= endInc ? styles.disabled : styles.active;
   const classLogicForCounterParagraphLeft =
     counter >= randomNumber ? styles.disabled : styles.active;
-  const classLogicForCounterParagraphLast = !isOn
+  const classLogicForCounterParagraphLast = !toggle
     ? classLogicForCounterParagraphRight
     : classLogicForCounterParagraphLeft;
   const classForCounterParagraph =
@@ -54,7 +54,7 @@ export const Counter = ({
   return (
     <Container>
       <CountParagraph className={styles.maxValue}>
-        Max value: {isOn ? randomNumber : increments.endInc}
+        Max value: {toggle ? randomNumber : endInc}
       </CountParagraph>
       <CountParagraph className={classForCounterParagraph}>
         {counter}
@@ -62,19 +62,17 @@ export const Counter = ({
       <progress
         className={cont.progress}
         value={counter}
-        max={isOn ? randomNumber : increments.endInc}
+        max={toggle ? randomNumber : endInc}
       ></progress>
       <div className={cont.btnContainer}>
         <Button
-          disabled={
-            isOn ? counter >= randomNumber : counter >= increments.endInc
-          }
+          disabled={toggle ? counter >= randomNumber : counter >= endInc}
           onClick={handleUpCounter}
         >
           inc
         </Button>
         <Button
-          disabled={isOn ? counter === 0 : counter === increments.startInc}
+          disabled={toggle ? counter === 0 : counter === startInc}
           onClick={handleResetCounter}
         >
           reset
